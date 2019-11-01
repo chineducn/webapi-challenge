@@ -6,6 +6,35 @@ module.exports = {
     errorHandler: errorHandler,
     validateProjectList: validateProjectList,
     validateProject: validateProject,
+    validateProjectId: validateProjectId,
+}
+
+function validateProjectId(req, res, next) {
+    const { id } = req.params
+    if (isNaN(Number(id))) {
+        next({
+            status: 400,
+            message: "The project id of " + id + " is not a valid number."
+        })
+    }
+    else {
+        projectDb.get(id)
+            .then(project => {
+                if (project) {
+                    req.project = project
+                    next()
+                }
+                else {
+                    next({
+                        status: 404,
+                        message: "The project of id " + id + " does not exist in the database."
+                    })
+                }
+            })
+            .catch(error => {
+                next({message: "There was an error in searching for the project of id " + id + " in the database" + error.message})
+            })
+    }
 }
 
 function validateProject(req, res, next) {
