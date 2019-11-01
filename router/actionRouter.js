@@ -6,7 +6,7 @@ const {
     validateActionList,
     validateActionId
 } = require('../middleware')
-//todo insert(action), update(id, changes), remove(id)
+//todo insert(action), update(id, changes)
 const router = express.Router()
 const actionGetValidation = [validateProjectList, validateProjectId, validateActionList, validateActionId]
 
