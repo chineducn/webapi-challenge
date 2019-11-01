@@ -10,7 +10,7 @@ module.exports = {
 
 function validateProject(req, res, next) {
     const { name, description } = req.body
-    if (!req.body) {
+    if (!Object.keys(req.body).length) {
         next({
             status: 400,
             message: "Missing project details"
