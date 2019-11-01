@@ -4,6 +4,7 @@ const {
     validateProjectList,
     validateProject,
     validateProjectId,
+    validateActionList,
 } = require('../middleware')
 
 const router = express.Router()
@@ -12,6 +13,12 @@ router.get('/', validateProjectList, (req, res, next) => {
     res
         .status(200)
         .json(req.projects)
+})
+
+router.get("/:id/actions", validateProjectList, validateProjectId, validateActionList, (req, res, next) => {
+    res
+        .status(200)
+        .json(req.actions)
 })
 
 router.put('/:id', validateProject, validateProjectList, validateProjectId, (req, res, next) => {
