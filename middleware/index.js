@@ -7,6 +7,26 @@ module.exports = {
     validateProjectList: validateProjectList,
     validateProject: validateProject,
     validateProjectId: validateProjectId,
+    validateActionList: validateActionList,
+}
+
+function validateActionList(req, res, next) {
+    const { id } = req.params
+    projectDb.getProjectActions(id)
+        .then(actions => {
+            if (actions.length) {
+                req.actions = actions
+                next()
+            }
+            else {
+                res
+                    .status(404)
+                    .json({message: "The project of id " + id + " has no associated actions"})  
+            }
+        })
+        .catch(error => {
+            next({message:"There was an error in retrieving the actions of project id " + id + ". " + error.message})
+        })
 }
 
 function validateProjectId(req, res, next) {
