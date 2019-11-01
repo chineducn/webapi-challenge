@@ -7,10 +7,11 @@ const {
     validateActionId,
     validateAction,
 } = require('../middleware')
-//todo insert(action), update(id, changes)
+
 const router = express.Router()
 const actionGetValidation = [validateProjectList, validateProjectId, validateActionList, validateActionId]
 const actionPostValidation = [validateProjectList, validateProjectId, validateAction]
+const actionPutValidation = [validateProjectList, validateProjectId, validateAction, validateActionId]
 
 router.get('/:id/actions/:action_id', actionGetValidation, (req, res, next) => {
     res.status(200).json(req.action)
@@ -26,8 +27,22 @@ router.post('/:id/actions/', actionPostValidation, (req, res, next) => {
         })
         .catch(error => {
             next({
-                message: "There was an error in the creation of the new action. Check action list for confirmation" + error.message
+                message: "There was an error in the creation of the new action in project id " + req.params.id + ". Check action list for confirmation" + error.message
             })
+        })
+})
+
+router.put('/:id/actions/:action_id', actionPutValidation, (req, res, next) => {
+    const { id, action_id } = req.params
+    const newDetails = {...req.body, project_id: id}
+    actionDb.update(action_id, newDetails)
+        .then(updatedAction => {
+            res
+                .status(200)
+                .json(updatedAction)
+        })
+        .catch(error => {
+            next({message: "There was an error in making changes on action id " + action_id + " in project id " + id + ". Please confirm from the action list. " + error.message})
         })
 })
 
