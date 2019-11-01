@@ -4,14 +4,31 @@ const {
     validateProjectList,
     validateProjectId,
     validateActionList,
-    validateActionId
+    validateActionId,
+    validateAction,
 } = require('../middleware')
 //todo insert(action), update(id, changes)
 const router = express.Router()
 const actionGetValidation = [validateProjectList, validateProjectId, validateActionList, validateActionId]
+const actionPostValidation = [validateProjectList, validateProjectId, validateAction]
 
 router.get('/:id/actions/:action_id', actionGetValidation, (req, res, next) => {
     res.status(200).json(req.action)
+})
+
+router.post('/:id/actions/', actionPostValidation, (req, res, next) => {
+
+    actionDb.insert({...req.body, project_id: req.params.id})
+        .then(newAction => {
+            res
+                .status(201)
+                .json(newAction)
+        })
+        .catch(error => {
+            next({
+                message: "There was an error in the creation of the new action. Check action list for confirmation" + error.message
+            })
+        })
 })
 
 router.delete('/:id/actions/:action_id', actionGetValidation, (req, res, next) => {
