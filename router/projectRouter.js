@@ -14,6 +14,20 @@ router.get('/', validateProjectList, (req, res, next) => {
         .json(req.projects)
 })
 
+router.put('/:id', validateProject, validateProjectList, validateProjectId, (req, res, next) => {
+    const { id } = req.params
+    const newDetails = req.body
+    projectDb.update(id, newDetails)
+        .then(updatedProject => {
+            res
+                .status(200)
+                .json(updatedProject)
+        })
+        .catch(error => {
+            next({message: "There was an error in making changes on project id " + id + ". Please confirm from the project list. " + error.message})
+        })
+})
+
 router.get('/:id', validateProjectList, validateProjectId, (req, res, next) => {
     res
         .status(200)
