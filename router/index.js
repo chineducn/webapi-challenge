@@ -5,6 +5,6 @@ const actionRouter = require('./actionRouter')
 const router = express.Router()
 
 router.use('/api/projects', projectRouter)
-router.use('/api/actions', actionRouter)
+router.use('/api/projects', actionRouter)
 
 module.exports = router
