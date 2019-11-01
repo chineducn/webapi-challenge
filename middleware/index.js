@@ -1,4 +1,5 @@
 const projectDb = require('../data/helpers/projectModel')
+const actionDb = require('../data/helpers/actionModel')
 
 
 module.exports = {
@@ -8,6 +9,35 @@ module.exports = {
     validateProject: validateProject,
     validateProjectId: validateProjectId,
     validateActionList: validateActionList,
+    validateActionId: validateActionId,
+}
+
+function validateActionId(req, res, next) {
+    const { action_id } = req.params
+    if (isNaN(Number(action_id))) {
+        next({
+            status: 400,
+            message: "The action id of " + action_id + " is not a valid number."
+        })
+    }
+    else {
+        actionDb.get(action_id)
+            .then(action => {
+                if (action) {
+                    req.action = action
+                    next()
+                }
+                else {
+                    next({
+                        status: 404,
+                        message: "The action of id " + action_id + " does not exist in the database."
+                    })
+                }
+            })
+            .catch(error => {
+                next({message: "There was an error in searching for the action of id " + action_id + " in the database" + error.message})
+            })
+    }
 }
 
 function validateActionList(req, res, next) {
