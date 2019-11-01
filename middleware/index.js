@@ -5,6 +5,26 @@ module.exports = {
     logger: logger,
     errorHandler: errorHandler,
     validateProjectList: validateProjectList,
+    validateProject: validateProject,
+}
+
+function validateProject(req, res, next) {
+    const { name, description } = req.body
+    if (!req.body) {
+        next({
+            status: 400,
+            message: "Missing project details"
+        })
+    }
+    else if (!name || !description) {
+        next({
+            status: 400,
+            message: "Missing name or description field"
+        })
+    }
+    else {
+        next()
+    }
 }
 
 function validateProjectList(req, res, next) {
