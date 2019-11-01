@@ -10,6 +10,26 @@ module.exports = {
     validateProjectId: validateProjectId,
     validateActionList: validateActionList,
     validateActionId: validateActionId,
+    validateAction: validateAction,
+}
+
+function validateAction(req, res, next) {
+    const { description, notes } = req.body
+    if (!Object.keys(req.body).length) {
+        next({
+            status: 400,
+            message: "Missing action details"
+        })
+    }
+    else if (!notes || !description) {
+        next({
+            status: 400,
+            message: "Missing notes or description field"
+        })
+    }
+    else {
+        next()
+    }
 }
 
 function validateActionId(req, res, next) {
