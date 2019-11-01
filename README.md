@@ -26,13 +26,24 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+    express.Router
+    express.json
+
 - [ ] Describe Middleware?
+
+    They are reusable functions that intercept requests to sometimes to perform actions before passing them on.
 
 - [ ] Describe a Resource?
 
+    Any information the user needs.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+    Status code
+
 - [ ] How can we partition our application into sub-applications?
+
+    Useing routers
 
 ## Project Setup
 
@@ -73,7 +84,7 @@ The `projectModel.js` helper includes an extra method called `getProjectActions(
 
 Design and build the necessary endpoints to:
 
-- [ ] Perform CRUD operations on _projects_ and _actions_. When adding an action, make sure the `project_id` provided belongs to an existing `project`. If you try to add an action with an `id` of 3 and there is no project with that `id` the database will return an error.
+- [x] Perform CRUD operations on _projects_ and _actions_. When adding an action, make sure the `project_id` provided belongs to an existing `project`. If you try to add an action with an `id` of 3 and there is no project with that `id` the database will return an error.
 - [x] Retrieve the list of actions for a project.
 
 ### Database Schemas
